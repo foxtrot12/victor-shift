@@ -12,6 +12,11 @@ import { OutputNode } from './nodes/outputNode';
 import { TextNode } from './nodes/textNode';
 
 import 'reactflow/dist/style.css';
+import { BlackBoxNode } from './nodes/blackBoxNode';
+import { CpuNode } from './nodes/cpuNode';
+import { DisplayNode } from './nodes/displayNode';
+import { GpuNode } from './nodes/gpuNode';
+import { PrinterNode } from './nodes/printerNode';
 
 const gridSize = 20;
 const proOptions = { hideAttribution: true };
@@ -20,6 +25,11 @@ const nodeTypes = {
   llm: LLMNode,
   customOutput: OutputNode,
   text: TextNode,
+  blackBox: BlackBoxNode,
+  cpu: CpuNode,
+  display : DisplayNode,
+  gpu: GpuNode,
+  printer : PrinterNode
 };
 
 const selector = (state) => ({

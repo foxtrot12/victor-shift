@@ -1,35 +1,56 @@
 // textNode.js
 
-import { useState } from 'react';
-import { Handle, Position } from 'reactflow';
+import { useMemo, useState } from "react";
+import { Position } from "reactflow";
+import { NodeBase } from "./nodeBase";
 
 export const TextNode = ({ id, data }) => {
-  const [currText, setCurrText] = useState(data?.text || '{{input}}');
+  const [currText, setCurrText] = useState(data?.text || "{{input}}");
+
+  function extractTemplateVars(str) {
+    const regex = /{{\s*([^}]+?)\s*}}/g;
+    const result = [];
+    let match;
+    while ((match = regex.exec(str)) !== null) {
+      result.push(match[1].trim());
+    }
+    return result;
+  }
 
   const handleTextChange = (e) => {
     setCurrText(e.target.value);
   };
 
-  return (
-    <div style={{width: 200, height: 80, border: '1px solid black'}}>
-      <div>
-        <span>Text</span>
-      </div>
-      <div>
-        <label>
+  const labelsArr = [
+    {
+      inner: (
+        <>
           Text:
-          <input 
-            type="text" 
-            value={currText} 
-            onChange={handleTextChange} 
-          />
-        </label>
-      </div>
-      <Handle
-        type="source"
-        position={Position.Right}
-        id={`${id}-output`}
-      />
-    </div>
+          <input type="text" value={currText} onChange={handleTextChange} />
+        </>
+      ),
+    },
+  ];
+
+  const handlesArr = useMemo(() => {
+    const handles = [
+      { type: "source", position: Position.Right, id: `${id}-output` },
+    ];
+
+    extractTemplateVars(currText).forEach((el) => {
+      const handle = {
+        type: "source",
+        position: Position.Left,
+        id: `${id}-${el}`,
+      };
+
+      handles.push(handle)
+    });
+
+    return handles
+  }, [currText,id]);
+
+  return (
+    <NodeBase labelsArr={labelsArr} handlesArr={handlesArr} head={"Text"} />
   );
-}
+};

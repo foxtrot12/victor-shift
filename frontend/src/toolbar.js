@@ -44,16 +44,9 @@ export const PipelineToolbar = () => {
 
   return (
     <div style={{ padding: "10px" }}>
-      <div
-        style={{
-          marginTop: "20px",
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "10px",
-        }}
-      >
-        {drabggableNodes.map((d) => (
-          <DraggableNode {...d} />
+      <div className="mt-5 flex flex-wrap gap-2.5">
+        {drabggableNodes.map((d,ind) => (
+          <DraggableNode key={ind} {...d} />
         ))}
       </div>
     </div>

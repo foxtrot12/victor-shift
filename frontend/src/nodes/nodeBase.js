@@ -2,26 +2,29 @@ import { Handle } from "reactflow";
 
 export const NodeBase = ({ handlesArr, labelsArr, head, title }) => {
   return (
-    <div style={{ width: 200, height: 80, border: "1px solid black" }}>
-      <div>
+    <div className="flex flex-col relative border-solid border-slate-700 rounded-lg border-2">
+      <div className="flex flex-col absolute justify-evenly w-full h-full">
         {handlesArr?.map((handleProps, ind) => (
           <Handle key={ind} {...handleProps} />
         ))}
       </div>
 
-      {head && (
-        <div>
-          <span>{head}</span>
-        </div>
-      )}
-      {title && (
-        <div>
-          <span>{title}</span>
-        </div>
-      )}
-      <div>
+      <div className="flex flex-col">
+        {head && (
+          <div>
+            <span>{head}</span>
+          </div>
+        )}
+        {title && (
+          <div>
+            <span>{title}</span>
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-col z-10">
         {labelsArr?.map(({ props, inner }, ind) => (
-          <label key={ind} {...props}>
+          <label className="flex flex-col" key={ind} {...props}>
             {inner}
           </label>
         ))}

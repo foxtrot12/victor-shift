@@ -32,7 +32,7 @@ const nodeTypes = {
   printer : PrinterNode
 };
 
-const selector = (state) => ({
+export const selector = (state) => ({
   nodes: state.nodes,
   edges: state.edges,
   getNodeID: state.getNodeID,

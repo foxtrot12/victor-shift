@@ -1,11 +1,12 @@
 // textNode.js
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Position } from "reactflow";
 import { NodeBase } from "./nodeBase";
 
 export const TextNode = ({ id, data }) => {
   const [currText, setCurrText] = useState(data?.text || "{{input}}");
+  const textAreaRef = useRef(null)
 
   function extractTemplateVars(str) {
     const regex = /{{\s*([^}]+?)\s*}}/g;
@@ -26,11 +27,13 @@ export const TextNode = ({ id, data }) => {
       inner: (
         <>
           Text:
-          <input type="text" value={currText} onChange={handleTextChange} />
+          <textarea ref={textAreaRef} className="overflow-hidden resize-none" type="text" value={currText} onChange={handleTextChange} />
         </>
       ),
     },
   ];
+
+  const maxInputHeight = 400
 
   const handlesArr = useMemo(() => {
     const handles = [
@@ -39,9 +42,10 @@ export const TextNode = ({ id, data }) => {
 
     extractTemplateVars(currText).forEach((el) => {
       const handle = {
-        type: "source",
+        type: "target",
         position: Position.Left,
         id: `${id}-${el}`,
+        style:{position : 'relative', top:'0',transform:'none'}
       };
 
       handles.push(handle)
@@ -49,6 +53,10 @@ export const TextNode = ({ id, data }) => {
 
     return handles
   }, [currText,id]);
+
+  useEffect(()=>{
+    textAreaRef.current.style.height = Math.min(textAreaRef.current.scrollHeight, maxInputHeight) + 'px'
+  },[textAreaRef,currText])
 
   return (
     <NodeBase labelsArr={labelsArr} handlesArr={handlesArr} head={"Text"} />
